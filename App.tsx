@@ -9,6 +9,7 @@ import Timer from './components/Timer';
 import LearningResourcesModal from './components/LearningResourcesModal';
 import FlashcardsModal from './components/FlashcardsModal';
 import LearningTipBar from './components/LearningTipBar';
+import SettingsModal from './components/SettingsModal';
 import { breakdownTaskIntoSubtasks, getLearningTipsForTopic, generateStudySprint } from './services/geminiService';
 
 const App: React.FC = () => {
@@ -17,6 +18,7 @@ const App: React.FC = () => {
   const [isAIAssistantModalOpen, setAIAssistantModalOpen] = useState(false);
   const [isResourcesModalOpen, setResourcesModalOpen] = useState(false);
   const [isFlashcardsModalOpen, setFlashcardsModalOpen] = useState(false);
+  const [isSettingsModalOpen, setSettingsModalOpen] = useState(false);
   const [aiAssistantMode, setAiAssistantMode] = useState<AIAssistantMode>('breakdown');
   const [selectedTaskForAI, setSelectedTaskForAI] = useState<Task | null>(null);
   const [isLoadingAI, setIsLoadingAI] = useState(false);
@@ -127,6 +129,21 @@ const App: React.FC = () => {
         setIsLoadingAI(false);
     }
   };
+  
+  const handleClearAllData = useCallback(() => {
+    if (window.confirm('Are you sure you want to clear all your study data? This action cannot be undone.')) {
+        try {
+            localStorage.removeItem('studySprintTasks');
+            localStorage.removeItem('studySprintTimerSettings');
+            localStorage.removeItem('studySprintPomodoros');
+            // A full page reload is the simplest way to ensure all component state is reset.
+            window.location.reload();
+        } catch (e) {
+            console.error("Failed to clear local storage", e);
+            alert("There was an error clearing your data.");
+        }
+    }
+  }, []);
 
 
   return (
@@ -136,6 +153,7 @@ const App: React.FC = () => {
         onBreakdownTopic={() => openAIAssistant('breakdown', null)}
         onPlanSprint={() => setResourcesModalOpen(true)}
         onGenerateFlashcards={() => setFlashcardsModalOpen(true)}
+        onOpenSettings={() => setSettingsModalOpen(true)}
       />
       <LearningTipBar />
       
@@ -189,6 +207,14 @@ const App: React.FC = () => {
           content={aiContent}
           onSubmit={handleAIAssistantSubmit}
           onAddSubtasks={addSubtasksToBoard}
+        />
+      )}
+      
+      {isSettingsModalOpen && (
+        <SettingsModal
+            isOpen={isSettingsModalOpen}
+            onClose={() => setSettingsModalOpen(false)}
+            onClearAllData={handleClearAllData}
         />
       )}
     </div>

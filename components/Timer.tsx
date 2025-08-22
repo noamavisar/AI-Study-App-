@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 
 type TimerMode = 'pomodoro' | 'shortBreak' | 'longBreak';
@@ -19,7 +20,14 @@ const Timer: React.FC = () => {
   const [mode, setMode] = useState<TimerMode>('pomodoro');
   const [time, setTime] = useState(settings.pomodoro * 60);
   const [isActive, setIsActive] = useState(false);
-  const [pomodoros, setPomodoros] = useState(0);
+  const [pomodoros, setPomodoros] = useState(() => {
+    try {
+      const saved = localStorage.getItem('studySprintPomodoros');
+      return saved ? JSON.parse(saved) : 0;
+    } catch {
+      return 0;
+    }
+  });
 
   useEffect(() => {
     try {
@@ -28,12 +36,22 @@ const Timer: React.FC = () => {
             const parsed = JSON.parse(savedSettings);
             setSettings(parsed);
             setTempSettings(parsed);
-            setTime(parsed.pomodoro * 60);
+            if (!isActive) {
+               setTime(parsed.pomodoro * 60);
+            }
         }
     } catch (error) {
         console.error("Failed to load timer settings from local storage", error);
     }
-  }, []);
+  }, [isActive]);
+
+  useEffect(() => {
+    try {
+        localStorage.setItem('studySprintPomodoros', JSON.stringify(pomodoros));
+    } catch (error) {
+        console.error("Failed to save pomodoros", error);
+    }
+  }, [pomodoros]);
 
   const switchMode = useCallback((newMode: TimerMode) => {
     setIsActive(false);
@@ -157,7 +175,20 @@ const Timer: React.FC = () => {
         </div>
       )}
        
-       <p className="text-center text-navy-400 text-sm mt-4">Completed Pomodoros: {pomodoros}</p>
+       <p className="text-center text-navy-400 text-sm mt-4 flex items-center justify-center space-x-2">
+            <span>Completed Pomodoros: {pomodoros}</span>
+            {pomodoros > 0 && (
+                <button 
+                    onClick={() => { if(window.confirm('Are you sure you want to reset your pomodoro count?')) setPomodoros(0) }} 
+                    className="text-navy-500 hover:text-white transition-colors" 
+                    title="Reset count"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z" clipRule="evenodd" />
+                    </svg>
+                </button>
+            )}
+        </p>
     </div>
   );
 };

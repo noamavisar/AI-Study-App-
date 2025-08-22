@@ -6,9 +6,10 @@ interface HeaderProps {
     onBreakdownTopic: () => void;
     onPlanSprint: () => void;
     onGenerateFlashcards: () => void;
+    onOpenSettings: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onAddTask, onBreakdownTopic, onPlanSprint, onGenerateFlashcards }) => {
+const Header: React.FC<HeaderProps> = ({ onAddTask, onBreakdownTopic, onPlanSprint, onGenerateFlashcards, onOpenSettings }) => {
   return (
     <header className="bg-navy-900/50 backdrop-blur-sm sticky top-0 z-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,6 +54,17 @@ const Header: React.FC<HeaderProps> = ({ onAddTask, onBreakdownTopic, onPlanSpri
               className="px-3 py-2 text-sm font-semibold text-white bg-cyan-600 hover:bg-cyan-700 rounded-md transition-colors duration-200"
             >
               Add Task
+            </button>
+            <div className="border-l border-navy-700 h-6 mx-1 sm:mx-2"></div>
+             <button
+              onClick={onOpenSettings}
+              className="p-2 text-navy-400 hover:text-white rounded-full hover:bg-navy-700/50 transition-colors"
+              aria-label="Settings"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                  <path fillRule="evenodd" d="M11.49 3.17a.75.75 0 0 1 1.02.67l.02 1.636a.75.75 0 0 1-1.019.705l-1.554-.836a.75.75 0 0 0-.84 0l-1.555.836a.75.75 0 0 1-1.02-.705l.02-1.636a.75.75 0 0 1 1.02-.67l1.554.836a.75.75 0 0 0 .842 0l1.555-.836ZM8.25 10a1.75 1.75 0 1 1 3.5 0 1.75 1.75 0 0 1-3.5 0ZM10 11.75a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5ZM12.51 13.6a.75.75 0 0 1 1.02.67l.02 1.636a.75.75 0 0 1-1.019.705l-1.554-.836a.75.75 0 0 0-.84 0l-1.555.836a.75.75 0 0 1-1.02-.705l.02-1.636a.75.75 0 0 1 1.02-.67l1.554.836a.75.75 0 0 0 .842 0l1.555-.836Z" clipRule="evenodd" />
+                  <path d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm0-1.5a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Z" />
+                </svg>
             </button>
           </div>
         </div>
