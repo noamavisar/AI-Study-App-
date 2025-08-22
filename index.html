@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Sprint AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'navy': {
+                '50': '#f0f4f8',
+                '100': '#d9e2ec',
+                '200': '#b3c5d9',
+                '300': '#8da8c6',
+                '400': '#668bb3',
+                '500': '#4d719e',
+                '600': '#3b5a83',
+                '700': '#2e4769',
+                '800': '#263a56',
+                '900': '#213147',
+                '950': '#151e2d',
+              },
+              'cyan': {
+                '500': '#06b6d4'
+              }
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.15.0"
+  }
+}
+</script>
+</head>
+  <body class="bg-navy-950 text-navy-50">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
